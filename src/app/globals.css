@@ -127,4 +127,12 @@
   html {
     @apply font-sans;
   }
+
+  /* Hide Next.js dev indicator badge */
+  nextjs-portal,
+  [data-nextjs-dev-indicator],
+  [data-nextjs-toast],
+  [data-nextjs-dialog-overlay] {
+    display: none !important;
+  }
 }
