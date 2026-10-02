@@ -438,7 +438,7 @@ export default function OnlineQuizDashboard() {
       {/* CIRCULAR BLACK DOWNLOAD BUTTON IN PLACE OF N BADGE */}
       <div className="fixed bottom-4 left-4 z-50 flex items-center">
         <a
-          href="./zip/ViTai.zip"
+          href="https://github.com/namtacozz/ITF/releases/download/v1.0.0/ViTai.zip"
           download="ViTai.zip"
           className="w-7 h-7 rounded-full bg-[#171717] hover:bg-[#262626] border border-white/20 text-white flex items-center justify-center shadow-lg transition-all hover:scale-105 active:scale-95 cursor-pointer"
           title="Tải xuống ViTai.zip"
