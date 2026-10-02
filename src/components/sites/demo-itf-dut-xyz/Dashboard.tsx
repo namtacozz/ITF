@@ -91,6 +91,9 @@ export default function OnlineQuizDashboard() {
     { day: 1, isCurrentMonth: false, isToday: false },
   ];
 
+  // Helper for asset prefix on GitHub Pages (/ITF)
+  const basePath = process.env.NODE_ENV === "production" ? "/ITF" : "";
+
   return (
     <div className="min-h-screen bg-[#F7F7F7] flex font-sans antialiased text-[#73879C]">
       {/* SIDEBAR */}
@@ -103,7 +106,7 @@ export default function OnlineQuizDashboard() {
         <div className="h-[56px] flex items-center px-4 border-b border-[#35495e] gap-2.5 text-white">
           <div className="w-[22px] h-[21px] flex items-center justify-center flex-shrink-0">
             <Image
-              src="/logo_itf_final.png"
+              src={`${basePath}/logo_itf_final.png`}
               alt="DemoITF Logo"
               width={22}
               height={21}
@@ -123,7 +126,7 @@ export default function OnlineQuizDashboard() {
           <div className="p-3.5 flex items-center gap-3 border-b border-[#35495e]/50">
             <div className="w-10 h-10 rounded-full overflow-hidden flex-shrink-0">
               <Image
-                src="/avatar_clean.png"
+                src={`${basePath}/avatar_clean.png`}
                 alt="Student Avatar"
                 width={40}
                 height={40}
@@ -243,7 +246,7 @@ export default function OnlineQuizDashboard() {
             >
               <div className="w-7 h-7 rounded-full overflow-hidden flex items-center justify-center flex-shrink-0">
                 <Image
-                  src="/student_avatar_small.png"
+                  src={`${basePath}/student_avatar_small.png`}
                   alt="Student Top Avatar"
                   width={28}
                   height={28}
