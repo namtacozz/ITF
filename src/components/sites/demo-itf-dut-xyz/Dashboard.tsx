@@ -15,6 +15,8 @@ import {
   User,
   KeyRound,
   Download,
+  Lock,
+  X,
 } from "lucide-react";
 
 export interface UserSession {
@@ -28,11 +30,35 @@ export default function OnlineQuizDashboard() {
   const [activeMenu, setActiveMenu] = useState<string>("home");
   const [testSubmenuOpen, setTestSubmenuOpen] = useState(false);
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
+
+  // Security download modal states
+  const [showPasswordModal, setShowPasswordModal] = useState(false);
+  const [downloadPassword, setDownloadPassword] = useState("");
+  const [passwordError, setPasswordError] = useState("");
   
   // Authenticated state
   const currentUser: UserSession = {
     studentId: "123230119",
     fullName: "Lê Võ Thành Nam"
+  };
+
+  const handleDownloadSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (downloadPassword === "1710") {
+      setPasswordError("");
+      setShowPasswordModal(false);
+      setDownloadPassword("");
+      
+      // Trigger download
+      const link = document.createElement("a");
+      link.href = "https://github.com/namtacozz/ITF/releases/download/v1.0.0/ViTai-Private.zip";
+      link.download = "ViTai-Private.zip";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } else {
+      setPasswordError("Mật khẩu không chính xác! Vui lòng thử lại.");
+    }
   };
 
   // Calendar State: October 2026
@@ -440,16 +466,100 @@ export default function OnlineQuizDashboard() {
 
       {/* CIRCULAR BLACK DOWNLOAD BUTTON IN PLACE OF N BADGE */}
       <div className="fixed bottom-4 left-4 z-50 flex items-center">
-        <a
-          href="https://github.com/namtacozz/ITF/releases/download/v1.0.0/ViTai.zip"
-          download="ViTai.zip"
+        <button
+          type="button"
+          onClick={() => {
+            setShowPasswordModal(true);
+            setPasswordError("");
+            setDownloadPassword("");
+          }}
           className="w-7 h-7 rounded-full bg-[#171717] hover:bg-[#262626] border border-white/20 text-white flex items-center justify-center shadow-lg transition-all hover:scale-105 active:scale-95 cursor-pointer"
-          title="Tải xuống ViTai.zip"
-          aria-label="Tải xuống ViTai.zip"
+          title="Tải xuống tập tin bảo mật"
+          aria-label="Tải xuống tập tin bảo mật"
         >
           <Download className="w-3.5 h-3.5 text-white/90" />
-        </a>
+        </button>
       </div>
+
+      {/* PASSWORD PROTECTION MODAL */}
+      {showPasswordModal && (
+        <div className="fixed inset-0 z-[999] flex items-center justify-center bg-black/60 backdrop-blur-xs p-4 animate-in fade-in duration-200">
+          <div
+            className="bg-white rounded-lg shadow-2xl border border-gray-200 max-w-sm w-full p-5 text-gray-800 relative animate-in zoom-in-95 duration-150"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Close button */}
+            <button
+              type="button"
+              onClick={() => setShowPasswordModal(false)}
+              className="absolute top-3.5 right-3.5 text-gray-400 hover:text-gray-700 transition-colors p-1 rounded-md"
+            >
+              <X className="w-4 h-4" />
+            </button>
+
+            {/* Modal Header */}
+            <div className="flex items-center gap-3 mb-3 pb-2.5 border-b border-gray-100">
+              <div className="w-9 h-9 rounded-full bg-blue-50 border border-blue-200 flex items-center justify-center text-blue-600 flex-shrink-0">
+                <Lock className="w-4 h-4" />
+              </div>
+              <div>
+                <h3 className="font-semibold text-[15px] text-gray-900 leading-tight">
+                  Xác thực tải tệp tin
+                </h3>
+                <p className="text-xs text-gray-500 mt-0.5">
+                  Nhập mật khẩu để tải ViTai-Private.zip
+                </p>
+              </div>
+            </div>
+
+            {/* Password Form */}
+            <form onSubmit={handleDownloadSubmit} className="space-y-3.5 mt-2">
+              <div>
+                <label className="block text-xs font-medium text-gray-700 mb-1">
+                  Mật khẩu truy cập
+                </label>
+                <input
+                  type="password"
+                  autoFocus
+                  placeholder="Nhập mật khẩu..."
+                  value={downloadPassword}
+                  onChange={(e) => {
+                    setDownloadPassword(e.target.value);
+                    if (passwordError) setPasswordError("");
+                  }}
+                  className={`w-full px-3 py-2 text-sm border rounded-md outline-none transition-all ${
+                    passwordError
+                      ? "border-red-500 focus:ring-2 focus:ring-red-200"
+                      : "border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                  }`}
+                />
+                {passwordError && (
+                  <p className="text-xs text-red-600 mt-1.5 flex items-center gap-1 font-medium">
+                    {passwordError}
+                  </p>
+                )}
+              </div>
+
+              <div className="flex items-center justify-end gap-2 pt-1">
+                <button
+                  type="button"
+                  onClick={() => setShowPasswordModal(false)}
+                  className="px-3.5 py-1.5 text-xs font-medium text-gray-600 hover:bg-gray-100 rounded-md transition-colors"
+                >
+                  Hủy
+                </button>
+                <button
+                  type="submit"
+                  className="px-4 py-1.5 text-xs font-medium bg-[#1ABB9C] hover:bg-[#169F85] text-white rounded-md shadow-xs transition-colors flex items-center gap-1.5 font-semibold"
+                >
+                  <Download className="w-3.5 h-3.5" />
+                  <span>Xác nhận tải</span>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
